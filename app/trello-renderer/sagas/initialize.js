@@ -18,6 +18,7 @@ import {
   getElectronStorage,
   setElectronStorage,
   savePersistStorage,
+  clearAppCache,
   throwError,
   notify,
 } from './helpers';
@@ -152,4 +153,11 @@ export function* handleQuitRequest(): Generator<*, *, *> {
       remote.app.quit();
     }
   }
+}
+
+export function* takeClearAppCache() {
+  yield eff.takeEvery(
+    actions.actionTypes.CLEAR_APP_CACHE_REQUEST,
+    clearAppCache,
+  );
 }

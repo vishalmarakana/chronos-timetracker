@@ -5,10 +5,15 @@ import {
   useMappedState,
 } from 'redux-react-hook';
 
+import {
+  hot,
+} from 'react-hot-loader/root';
+
 import type {
   Dispatch,
 } from 'trello-types';
 
+import * as actions from 'trello-actions';
 import * as selectors from 'trello-selectors';
 import {
   TestComponent,
@@ -47,7 +52,17 @@ const AppContainer = () => {
           : (
             isAuthorized
               ? (
-                <TestComponent />
+                <div>
+                  <TestComponent />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      dispatch(actions.clearAppCacheRequest());
+                    }}
+                  >
+                    Clear cache
+                  </button>
+                </div>
               ) : (
                 <AuthForm />
               )
@@ -57,4 +72,4 @@ const AppContainer = () => {
   );
 };
 
-export default AppContainer;
+export default hot(AppContainer);

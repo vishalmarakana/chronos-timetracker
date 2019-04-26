@@ -6,7 +6,6 @@ import {
   StoreContext,
 } from 'redux-react-hook';
 import {
-  hot,
   setConfig,
   cold,
 } from 'react-hot-loader';
@@ -48,6 +47,6 @@ window.addEventListener(
         rootEl,
       )
     );
-    render(hot(module)(AppErrorBoundary));
+    render(AppErrorBoundary);
   },
 );

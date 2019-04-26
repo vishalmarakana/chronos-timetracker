@@ -18,7 +18,8 @@ const rendererEnhancer = (store) => {
 
   window.addEventListener('beforeunload', (ev) => {
     const stopClose = (
-      store.getState()?.ui?.readyToQuit === false
+      sourceId === 1
+      && !store.getState().ui.readyToQuit
     );
     if (stopClose) {
       setTimeout(() => {

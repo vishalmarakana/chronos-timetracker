@@ -1,7 +1,6 @@
 import * as eff from 'redux-saga/effects';
 import storage from 'electron-json-storage';
 
-import config from 'config';
 import {
   getUiState,
 } from 'selectors';
