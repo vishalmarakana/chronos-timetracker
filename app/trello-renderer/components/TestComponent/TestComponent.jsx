@@ -1,8 +1,9 @@
 // @flow
 import React from 'react';
 import {
-  useMappedState,
-} from 'redux-react-hook';
+  useSelector,
+} from 'react-redux';
+
 import type {
   Node,
 } from 'react';
@@ -29,7 +30,7 @@ const TestComponet = (
   } = props;
   const {
     userId,
-  } = useMappedState(mapState);
+  } = useSelector(mapState);
 
   return (
     <div>

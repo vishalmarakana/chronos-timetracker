@@ -20,12 +20,12 @@ export const setUiState = (
 });
 
 export const initialConfigureApp = ({
-  key,
   token,
+  saveCredentials,
 }) => ({
   type: actionTypes.INITIAL_CONFIGURE_APP,
-  key,
   token,
+  saveCredentials,
 });
 
 export const clearAppCacheRequest = () => ({

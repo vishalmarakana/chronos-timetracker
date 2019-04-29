@@ -1,9 +1,9 @@
 // @flow
 import React from 'react';
 import {
+  useSelector,
   useDispatch,
-  useMappedState,
-} from 'redux-react-hook';
+} from 'react-redux';
 
 import {
   hot,
@@ -37,7 +37,7 @@ const AppContainer = () => {
   const {
     initializeInProcess,
     isAuthorized,
-  } = useMappedState(mapState);
+  } = useSelector(mapState);
   const dispatch: Dispatch = useDispatch();
 
   return (
@@ -62,6 +62,15 @@ const AppContainer = () => {
                   >
                     Clear cache
                   </button>
+                  <webview
+                    src="https://trello.com/b/jQoLS8B6/new-web-app-front-end"
+                    autosize="on"
+                    style={{
+                      display: 'inline-flex',
+                      width: '800px',
+                      height: '680px',
+                    }}
+                  />
                 </div>
               ) : (
                 <AuthForm />

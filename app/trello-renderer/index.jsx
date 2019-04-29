@@ -3,8 +3,8 @@ import {
   render as reactRender,
 } from 'react-dom';
 import {
-  StoreContext,
-} from 'redux-react-hook';
+  Provider,
+} from 'react-redux';
 import {
   setConfig,
   cold,
@@ -41,9 +41,9 @@ window.addEventListener(
     const rootEl = window.document.getElementById('root');
     const render = Component => (
       reactRender(
-        <StoreContext.Provider value={store}>
+        <Provider store={store}>
           <Component />
-        </StoreContext.Provider>,
+        </Provider>,
         rootEl,
       )
     );

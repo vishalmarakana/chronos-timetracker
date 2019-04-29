@@ -4,8 +4,6 @@ import {
 } from 'trello-actions';
 import * as Sentry from '@sentry/electron';
 
-import config from 'config';
-
 import configureStore from './store/configurePreloadStore';
 import pjson from '../package.json';
 
@@ -19,26 +17,11 @@ if (process.env.NODE_ENV === 'production') {
 
 const store = configureStore();
 
-function setRendererUiState(
-  keyOrRootValues,
-  maybeValues,
-) {
+function authRequest({ token }) {
   return {
-    type: actionTypes.SET_UI_STATE,
-    payload: {
-      keyOrRootValues,
-      maybeValues,
-    },
-    scope: 'allRenderer',
-  };
-}
-
-function initialConfigureApp(token) {
-  return {
-    type: actionTypes.INITIAL_CONFIGURE_APP,
-    key: config.trelloApiKey,
+    type: actionTypes.AUTH_REQUEST,
     token,
-    scope: 'allRenderer',
+    scope: [1],
   };
 }
 
@@ -81,12 +64,9 @@ function init() {
     && global.location.pathname === '/1/token/approve'
   ) {
     const token = document.querySelector('pre').textContent.trim();
-    store.dispatch(setRendererUiState({
-      trelloApiToken: token,
-    }));
-    store.dispatch(initialConfigureApp(
+    store.dispatch(authRequest({
       token,
-    ));
+    }));
   }
 }
 

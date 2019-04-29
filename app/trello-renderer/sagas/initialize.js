@@ -1,4 +1,3 @@
-// @flow
 import * as eff from 'redux-saga/effects';
 import {
   remote,
@@ -28,13 +27,13 @@ const keytar = remote.require('keytar');
 export function* takeInitialConfigureApp() {
   while (true) {
     const {
-      key,
       token,
+      saveCredentials,
     } = yield eff.take(actions.actionTypes.INITIAL_CONFIGURE_APP);
     try {
       yield eff.call(
         trelloApi.setKeyAndToken,
-        key,
+        config.trelloApiKey,
         token,
       );
       const userData = yield eff.call(trelloApi.getMyself);
@@ -42,21 +41,24 @@ export function* takeInitialConfigureApp() {
         trelloUserId: userData.id,
         isAuthorized: true,
         initializeInProcess: false,
+        authRequestInProcess: false,
       }));
-      yield eff.call(
-        setElectronStorage,
-        'last_used_account',
-        {
-          type: 'trello',
-          trelloUserId: userData.id,
-        },
-      );
-      yield eff.call(
-        keytar.setPassword,
-        'Chronos',
-        `trello_${userData.id}`,
-        token,
-      );
+      if (saveCredentials) {
+        yield eff.call(
+          setElectronStorage,
+          'last_used_account',
+          {
+            type: 'trello',
+            trelloUserId: userData.id,
+          },
+        );
+        yield eff.call(
+          keytar.setPassword,
+          'Chronos',
+          `trello_${userData.id}`,
+          token,
+        );
+      }
     } catch (err) {
       yield eff.call(throwError, err);
       yield eff.put(actions.setUiState({
@@ -67,7 +69,7 @@ export function* takeInitialConfigureApp() {
   }
 }
 
-export function* initializeApp(): Generator<*, *, *> {
+export function* initializeApp() {
   yield eff.put(actions.setUiState({
     initializeInProcess: true,
   }));
@@ -96,13 +98,15 @@ export function* initializeApp(): Generator<*, *, *> {
           'Chronos',
           `trello_${authCredentials.trelloUserId}`,
         );
+        // TODO: get cookies
+        // TODO: Auth flow with cookies
         yield eff.put(actions.setUiState({
           isAuthorized: true,
           trelloApiToken,
         }));
         yield eff.put(actions.initialConfigureApp({
-          key: config.trelloApiKey,
           token: trelloApiToken,
+          saveCredentials: false,
         }));
       } catch (error) {
         Sentry.captureMessage('keytar error!', {
@@ -140,7 +144,7 @@ export function* initializeApp(): Generator<*, *, *> {
   }
 }
 
-export function* handleQuitRequest(): Generator<*, *, *> {
+export function* handleQuitRequest() {
   while (true) {
     yield eff.take(sharedActionTypes.QUIT_REQUEST);
     yield eff.call(savePersistStorage);

@@ -29,6 +29,9 @@ export const persistInitialState = {
 
 const initialState: UiState = {
   initializeInProcess: false,
+  authRequestInProcess: false,
+  authWebContentsId: null,
+
   readyToQuit: false,
   isAuthorized: false,
   trelloApiToken: null,

@@ -1,6 +1,11 @@
 import React, {
   useEffect,
 } from 'react';
+import {
+  useDispatch,
+} from 'react-redux';
+
+import * as actions from 'trello-actions';
 
 import {
   getPreload,
@@ -11,10 +16,15 @@ import * as S from './styled';
 
 
 const AuthForm = () => {
+  const dispatch = useDispatch();
   useEffect(() => {
     if (config.loginTrelloWindowDevTools) {
       const webview = document.querySelector('webview');
+      dispatch(actions.setUiState({
+        authWebContentsId: webview.getWebContents().id,
+      }));
       webview.addEventListener('dom-ready', () => {
+        console.log('dom-ready');
         webview.openDevTools();
       });
     }
