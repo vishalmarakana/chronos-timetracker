@@ -20,6 +20,11 @@ import {
   AuthForm,
 } from 'trello-components';
 
+import {
+  // Sidebar,
+  Main,
+} from 'trello-containers';
+
 type Props = {
   initializeInProcess: boolean,
   isAuthorized: boolean,
@@ -53,6 +58,7 @@ const AppContainer = () => {
             isAuthorized
               ? (
                 <div>
+                  <Main />
                   <TestComponent />
                   <button
                     type="button"
@@ -62,15 +68,6 @@ const AppContainer = () => {
                   >
                     Clear cache
                   </button>
-                  <webview
-                    src="https://trello.com/b/jQoLS8B6/new-web-app-front-end"
-                    autosize="on"
-                    style={{
-                      display: 'inline-flex',
-                      width: '800px',
-                      height: '680px',
-                    }}
-                  />
                 </div>
               ) : (
                 <AuthForm />
