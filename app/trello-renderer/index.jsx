@@ -18,6 +18,7 @@ import {
 import rootSaga from './sagas';
 import store from './store';
 
+import './assets/stylesheets/main.less';
 
 setConfig({
   pureSFC: true,

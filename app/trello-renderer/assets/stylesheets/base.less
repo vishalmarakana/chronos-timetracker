@@ -1,0 +1,115 @@
+body {
+  font-family: Helvetica Neue;
+  margin: 0px;
+  padding: 0px;
+  font-size: 14px;
+  color: #333333;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+.baseIcon {
+  background: url('../images/icon.png')
+}
+
+.activeIcon {
+  background: url('../images/icon-active.png')
+}
+
+.ReactVirtualized__Grid {
+  outline: none !important;
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+}
+
+.draggable {
+  -webkit-app-region: drag;
+}
+
+::-webkit-scrollbar {
+    width: 2px;
+    height: 2px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-track-piece {
+    background: transparent url('../images/transparent.png') repeat-y !important;
+}
+
+::-webkit-scrollbar-track-piece:start {
+    background: transparent url('../images/transparent.png') repeat-y !important;
+}
+
+::-webkit-scrollbar-track-piece:end {
+    background: transparent url('../images/transparent.png') repeat-y !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #6386e2;
+    border: 3px solid transparent;
+    border-radius: 9px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+  height: 81px;
+}
+
+* {
+  outline: none !important;
+  // font-family: system-ui !important;
+}
+
+a {
+  color: #0052cc;
+  text-decoration: none;
+  &:hover {
+    color: #0065ff;
+    text-decoration: underline;
+  }
+  // :active {
+  //   color: #3b73af;
+  // }
+}
+
+.rc-time-picker-input {
+  border: 0;
+  background: inherit;
+  margin-left: 4px;
+  color: #091E42;
+  color: #7A869A;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+li.rc-time-picker-panel-select-option-selected {
+  background: #FAFBFC;
+  color: #0052cc;
+}
+
+@keyframes blink {
+  0% {
+    background: #fff;
+  }
+  50% {
+    background: #f4f5f7;
+  }
+  100% {
+    background: #fff;
+  }
+}
+
+div.blink {
+  animation: blink 2s ease forwards;
+}
+
+.pointer {
+  cursor: pointer;
+}
