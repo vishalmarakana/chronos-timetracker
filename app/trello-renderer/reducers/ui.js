@@ -25,6 +25,7 @@ const mergeValues = (
 );
 
 export const persistInitialState = {
+  sidebarType: 'all',
 };
 
 const initialState: UiState = {

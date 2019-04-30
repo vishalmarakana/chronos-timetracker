@@ -30,13 +30,17 @@ export function* takeInitialConfigureApp() {
       token,
       saveCredentials,
     } = yield eff.take(actions.actionTypes.INITIAL_CONFIGURE_APP);
+    console.log('saveCredentials', saveCredentials);
     try {
       yield eff.call(
         trelloApi.setKeyAndToken,
         config.trelloApiKey,
         token,
       );
+
       const userData = yield eff.call(trelloApi.getMyself);
+      yield eff.put(actions.fetchBoardsRequest());
+      yield eff.put(actions.fillUserData(userData));
       yield eff.put(actions.setUiState({
         trelloUserId: userData.id,
         isAuthorized: true,

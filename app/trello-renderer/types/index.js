@@ -24,3 +24,5 @@ export type State = {|
 
 export type Store = ReduxStore<State, Action>;
 export type Dispatch = ReduxDispatch<Action>;
+
+export type Id = string | number;

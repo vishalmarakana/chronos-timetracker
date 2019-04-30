@@ -1,6 +1,11 @@
 function apiFactory({ makeRequest }) {
   const apiCommonMethods = [
     ['getMyself', '/members/me'],
+    ['getBoard', '/boards/{boardId}'],
+    ['getAllBoards', '/members/me/?{boards}'],
+    ['getBoardCards', '/boards/{boardId}/cards'],
+    ['getBoardLists', '/boards/{boardId}/lists'],
+    ['getListCards', '/lists/{listId}/cards'],
   ];
 
   let headers = {
