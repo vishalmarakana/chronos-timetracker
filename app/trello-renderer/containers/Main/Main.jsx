@@ -44,7 +44,6 @@ const Main: StatelessFunctionalComponent<Props> = (): Node => {
         <webview
           id="trello-webview"
           src="https://trello.com/b/vJ1gUFrp/chronostestboard"
-          disablewebsecurity="true"
           autosize="on"
           preload={`file:${getPreload('trelloCardPreload')}`}
           style={{
