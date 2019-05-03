@@ -12,7 +12,7 @@ import {
 } from 'shared/reducers';
 
 import rendererEnhancer from './middleware';
-import cardReducer from '../reducers/cardReducer'
+import cardReducer from '../reducers/cardReducer';
 
 const rootReducer = combineReducers({
   cardReducer,

@@ -4,11 +4,53 @@ import configureStore from './store/configureCardPreloadStore';
 
 const store = configureStore();
 
-console.log('store', store);
-console.log('store', store.getState());
+{
+  let powerUpApi = null;
+  window.providePowerUpApiForChronos = (api) => {
+    powerUpApi = api;
+  };
 
-const iframe = document.querySelector('.plugin-iframe');
-
-if (iframe) {
-  iframe.contentWindow.postMessage('5ccac869d743525f84927b45');
+  /*
+  window.addEventListener(
+    'message',
+    (event) => {
+      console.log(event);
+      if (
+        event.type === 'message'
+        && event.origin === 'https://webpal-trello.glitch.me'
+        && event.source.isChronos
+        && event.data.secret
+      ) {
+        secret = event.data.secret;
+      }
+    },
+    false,
+  );
+  */
+  setTimeout(() => {
+    postMessage(
+      {
+        data: [
+          {
+            type: 'request',
+            data: {
+              args: [
+                {
+                  url: 'https://trello.com/c/82eHEIF3/1-testcard',
+                  context: {
+                    command: 'navigate',
+                  },
+                },
+              ],
+              command: 'navigate',
+              id: '$generateRandomId',
+            },
+          },
+        ],
+        secret: powerUpApi.io.secret,
+        type: 'bulk',
+      },
+      'https://trello.com',
+    );
+  }, 5000);
 }
