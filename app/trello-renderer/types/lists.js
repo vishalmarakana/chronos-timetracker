@@ -11,15 +11,12 @@ export type ListsAction =
   |};
 
 export type List = {
-  // id: number,
-  // self: string,
-  // state: string,
-  // name: string,
-  // startDate: string,
-  // endDate: string,
-  // completeDate: string,
-  // originBoardId: number,
-  // goal: string,
+  id: string,
+  name: string,
+  closed: boolean,
+  idBoard: string,
+  pos: number,
+  subscribed: boolean
 };
 
 export type ListsResources = {

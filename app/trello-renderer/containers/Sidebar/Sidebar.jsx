@@ -13,7 +13,7 @@ import type {
 } from 'react-redux';
 import type {
   Dispatch,
-} from 'types';
+} from 'trello-types';
 
 import * as actions from 'trello-actions';
 import {
@@ -21,7 +21,7 @@ import {
 } from 'trello-components';
 import {
   getUiState,
-} from 'selectors';
+} from 'trello-selectors';
 
 import CardsSourcePicker from './CardsSourcePicker';
 import SidebarCards from './SidebarCards';

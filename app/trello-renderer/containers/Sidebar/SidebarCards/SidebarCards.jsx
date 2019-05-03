@@ -4,18 +4,22 @@ import {
   connect,
 } from 'react-redux';
 
+import {
+  DateTime,
+} from 'luxon';
+
+import * as R from 'ramda';
+
 import type {
   StatelessFunctionalComponent,
   Node,
 } from 'react';
 import type {
-  Id,
   Dispatch,
-  // Card,
-} from 'types';
+  Card,
+} from 'trello-types';
 
 import {
-  notificationIcon,
   attachmentsIcon,
   duedateIcon,
   commentsIcon,
@@ -23,21 +27,16 @@ import {
   checkIcon,
   checkboxIcon,
   subscribeIcon,
-  voteIcon,
 } from 'trello-assets'
 
 import * as selectors from 'trello-selectors';
-import {
-  IssueItemPlaceholder,
-  ErrorBoundary,
-} from 'components';
-
+import * as actions from 'trello-actions';
 import * as S from './styled';
 
 import CardsHeader from './CardsHeader';
 
 type Props = {
-  // cards: Array<Card>,
+  cards: Array<Card>,
   dispatch: Dispatch,
 };
 
@@ -48,15 +47,16 @@ const SidebarAllItems: StatelessFunctionalComponent<Props> = ({
   <S.ListContainer>
     <CardsHeader />
     <S.CardsWrapper>
-      {cards && cards.length > 0 && cards.map(card => (
+      {cards && cards.length > 0 && cards.map(({ badges, ...card }) => (
         <S.Card
           key={card.id}
+          onClick={() => dispatch(actions.setCurrentCardId({ currentCardId: card.id }))}
         >
           <S.CardLabelsWrapper>
             {card?.labels?.map(({
               id,
               name,
-              color
+              color,
             }) => (
               <S.CardLabel
                 key={id}
@@ -71,29 +71,78 @@ const SidebarAllItems: StatelessFunctionalComponent<Props> = ({
             {card.name}
           </S.CardName>
           <S.CardBadgesWrapper>
-            {card?.badges && Object.keys(card.badges).map(key => ({
-              // checkItems: (
-              //   <S.CheckItemsBadge>
-              //     {card.badges.checkItemsChecked > 0 ? (
-              //       <S.BadgeIcon
-              //         src={checkIcon}
-              //         alt="checkedIcon"
-              //       />
-              //       `${card.badges.checkItemsChecked}/${key}`
-              //     ) : (
-              //       <S.BadgeIcon
-              //         src={checkboxIcon}
-              //         alt="checkboxIcon"
-              //       />
-              //       `${key}`
-              //     )}
-              //   </S.CheckItemsBadge>
-              // ),
+            {badges && Object.keys(badges).map(key => !R.isNil(badges[key]) && ({
+              due: (
+                <S.DueBadge
+                  dueComplete={badges.dueComplete}
+                  isDeadlineCrossed={(
+                    DateTime
+                      .local()
+                      .valueOf()) > (
+                    DateTime
+                      .fromISO(badges[key])
+                      .valueOf()
+                  )}
+                >
+                  <S.BadgeIcon
+                    src={duedateIcon}
+                    alt="duedateIcon"
+                    processSVG={(code) => {
+                      if (badges.dueComplete || (
+                        DateTime
+                          .local()
+                          .valueOf() > (
+                          DateTime
+                            .fromISO(badges[key])
+                            .valueOf())
+                      )) {
+                        return code.replace(/fill=".*?"/g, 'fill="#fff"');
+                      }
+                      return code.replace(/fill=".*?"/g, 'fill="#959da1"');
+                    }}
+                  />
+                  &nbsp;
+                  {DateTime.fromISO(badges[key]).toFormat('dd MMM yyyy')}
+                </S.DueBadge>
+              ),
+              checkItems: (
+                <S.CheckItemsBadge>
+                  {badges.checkItemsChecked > 0 ? (
+                    <S.BadgeIcon
+                      src={checkIcon}
+                      alt="checkedIcon"
+                    />
+                  ) : (
+                    <S.BadgeIcon
+                      src={checkboxIcon}
+                      alt="checkboxIcon"
+                    />
+                  )}
+                  {`${badges.checkItemsChecked}/${badges[key]}`}
+                </S.CheckItemsBadge>
+              ),
               subscribed: (
                 <S.SubscriptionBadge>
                   <S.BadgeIcon
                     src={subscribeIcon}
                     alt="subscribeIcon"
+                  />
+                </S.SubscriptionBadge>
+              ),
+              attachments: (
+                <S.SubscriptionBadge>
+                  <S.BadgeIcon
+                    src={attachmentsIcon}
+                    alt="attachmentsIcon"
+                  />
+                  {badges[key]}
+                </S.SubscriptionBadge>
+              ),
+              description: (
+                <S.SubscriptionBadge>
+                  <S.BadgeIcon
+                    src={descriptionIcon}
+                    alt="descriptionIcon"
                   />
                 </S.SubscriptionBadge>
               ),
@@ -103,17 +152,8 @@ const SidebarAllItems: StatelessFunctionalComponent<Props> = ({
                     src={commentsIcon}
                     alt="commentsIcon"
                   />
-                  {card.badges[key]}
+                  {badges[key]}
                 </S.CommentsBadge>
-              ),
-              votes: (
-                <S.VotesBadge>
-                  <S.BadgeIcon
-                    src={voteIcon}
-                    alt="voteIcon"
-                  />
-                  {card.badges[key]}
-                </S.VotesBadge>
               ),
             }[key]
             ))}
